@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from 'pixel-retroui';
+import { Card, Button, Input } from 'pixel-retroui';
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -10,18 +10,20 @@ export default function Home() {
     const [room, setRoom] = useState("friends");
     const [name, setName] = useState("");
     return (
-        <div style={{ maxWidth: '60rem', width: '100%', margin: '0 auto', padding: '2rem', background: coolGradient, height: '100vh' }}>
+        <div style={{
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            maxWidth: '60rem', margin: '0 auto', padding: '2rem', background: coolGradient, height: '100vh'
+        }}>
 
-            <Card className="p-4 text-center w-full" bg="#ddceb4"
+            <Card className="p-4 text-center " bg="#ddceb4"
                 textColor="#30210b"
                 borderColor="#30210b"
                 shadowColor="#30210b">
-                <h2>Welcome, friend</h2>
-            </Card>
-            <div style={{ display: "grid", gap: 12, maxWidth: 420 }}>
-                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
+                <h1 style={{ fontWeight: 700, fontSize: 30, paddingBottom: 8 }}>Welcome, friend</h1>
+                {/* <div style={{ display: "grid", gap: 12, maxWidth: 420 }}> */}
+                <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
 
-                <button
+                <Button
                     onClick={() => {
                         localStorage.setItem("lk_name", name);
                         router.push(`/call`);
@@ -29,8 +31,8 @@ export default function Home() {
                     disabled={!name}
                 >
                     Join call
-                </button>
-            </div>
+                </Button>
+            </Card>
         </div>
 
     )
