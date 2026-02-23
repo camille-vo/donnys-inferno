@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   description: "A place to hang out",
 };
 
+const coolGradient = 'linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 20%, rgba(255, 255, 255, 0.3) 80%, rgba(255, 255, 255, 0) 100%)';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div style={{ background: coolGradient, height: '100vh' }}>
+          {children}
+        </div>
       </body>
     </html>
   );
