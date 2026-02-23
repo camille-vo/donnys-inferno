@@ -7,26 +7,21 @@ import {
   ControlBar,
   GridLayout,
   ParticipantTile,
+  VideoConference,
 } from "@livekit/components-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { generate } from 'yet-another-name-generator'
 
-export default function RoomPage(props: { params?: { room?: string } }) {
+export default function RoomPage() {
+
   // Safe decode + fallback
-  const roomName = useMemo(() => {
-    const raw = props?.params?.room;
-    if (!raw) return "friends";
-    try {
-      return decodeURIComponent(raw);
-    } catch {
-      return raw;
-    }
-  }, [props?.params?.room]);
+  const roomName = "frends";
 
   const [token, setToken] = useState<string | null>(null);
   const [name, setName] = useState("");
 
   useEffect(() => {
-    const saved = localStorage.getItem("lk_name") || "";
+    const saved = localStorage.getItem("lk_name") || generate();
     setName(saved);
   }, []);
 
@@ -43,23 +38,6 @@ export default function RoomPage(props: { params?: { room?: string } }) {
     })();
   }, [name, roomName]);
 
-  if (!name) {
-    return (
-      <main style={{ padding: 24 }}>
-        <h1>Join {roomName}</h1>
-        <input
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            localStorage.setItem("lk_name", e.target.value);
-          }}
-          placeholder="Your name"
-          style={{ padding: 8 }}
-        />
-      </main>
-    );
-  }
-
   if (!token) return <main style={{ padding: 24 }}>Getting token…</main>;
 
   return (
@@ -68,14 +46,15 @@ export default function RoomPage(props: { params?: { room?: string } }) {
       token={token}
       connect
       audio
-      video={false}
-      style={{ height: "100vh" }}
+      video
+      style={{ height: "90vh" }}
     >
-      <RoomAudioRenderer />
+      {/* <RoomAudioRenderer />
       <GridLayout tracks={[]}>
         <ParticipantTile />
       </GridLayout>
-      <ControlBar />
+      <ControlBar /> */}
+      <VideoConference />
     </LiveKitRoom>
   );
 }

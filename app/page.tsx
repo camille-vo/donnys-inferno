@@ -19,15 +19,14 @@ export default function Home() {
                 <h2>Welcome, friend</h2>
             </Card>
             <div style={{ display: "grid", gap: 12, maxWidth: 420 }}>
-                <input value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Room name" />
                 <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
 
                 <button
                     onClick={() => {
                         localStorage.setItem("lk_name", name);
-                        router.push(`/room/${encodeURIComponent(room)}`);
+                        router.push(`/call`);
                     }}
-                    disabled={!room || !name}
+                    disabled={!name}
                 >
                     Join call
                 </button>
