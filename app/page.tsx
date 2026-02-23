@@ -18,9 +18,10 @@ export default function Home() {
             <Card className="p-4 text-center " bg="#ddceb4"
                 textColor="#30210b"
                 borderColor="#30210b"
-                shadowColor="#30210b">
+                shadowColor="#30210b"
+                style={{ margin: 'auto' }}>
                 <h1 style={{ fontWeight: 700, fontSize: 30, paddingBottom: 8 }}>Welcome, friend</h1>
-                {/* <div style={{ display: "grid", gap: 12, maxWidth: 420 }}> */}
+                <h2 style={{ padding: '4px' }}>Join the call to hang out and chat</h2>
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" />
 
                 <Button
