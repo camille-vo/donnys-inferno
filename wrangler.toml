@@ -1,5 +1,0 @@
-name = "donnys-inferno"
-pages_build_output_dir = ".next"
-
-[env.production]
-vars = { ENVIRONMENT = "production" }
