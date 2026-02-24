@@ -11,6 +11,7 @@ import {
 } from "@livekit/components-react";
 import { useEffect, useState } from "react";
 import { generate } from 'yet-another-name-generator'
+import Flower from "./Flower";
 
 export default function RoomPage() {
 
@@ -41,20 +42,20 @@ export default function RoomPage() {
   if (!token) return <main style={{ padding: 24 }}>Getting token…</main>;
 
   return (
-    <LiveKitRoom
-      serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
-      token={token}
-      connect
-      audio
-      video
-      style={{ height: "90vh" }}
-    >
-      {/* <RoomAudioRenderer />
-      <GridLayout tracks={[]}>
-        <ParticipantTile />
-      </GridLayout>
-      <ControlBar /> */}
-      <VideoConference />
-    </LiveKitRoom>
+    <div style={{ position: "relative" }}>
+      <LiveKitRoom
+        serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
+        token={token}
+        connect
+        audio
+        video
+        style={{ height: "90vh" }}
+      >
+        <VideoConference />
+      </LiveKitRoom>
+      <div style={{ position: "fixed", bottom: 80, left: "50%", transform: "translateX(-50%)", zIndex: 50 }}>
+        <Flower />
+      </div>
+    </div>
   );
 }
