@@ -1,0 +1,30 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  livekit-server:
+    image: livekit/livekit-server
+    command: --config /etc/livekit.yaml
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "7882:7882/udp"
+    volumes:
+      - ./livekit.yaml:/etc/livekit.yaml:ro
+    depends_on:
+      - redis
+
+  egress:
+    image: livekit/egress
+    cap_add:
+      - SYS_ADMIN
+    environment:
+      - EGRESS_CONFIG_FILE=/etc/egress.yaml
+    volumes:
+      - ./egress.yaml:/etc/egress.yaml:ro
+      - ./recordings:/out
+    depends_on:
+      - livekit-server
+      - redis

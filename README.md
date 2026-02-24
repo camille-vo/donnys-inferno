@@ -1,36 +1,57 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Prerequisites
+
+- [Docker](https://www.docker.com/) (for LiveKit server, Egress, and Redis)
+- [Bun](https://bun.sh/) (or Node.js)
+
 ## Getting Started
 
-First, run the development server:
+### 1. Start the backend services
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
+docker compose up
+```
+
+This starts three containers:
+
+- **Redis** — message bus between LiveKit and Egress
+- **LiveKit server** — WebRTC signaling and room management
+- **Egress** — audio/video recording service
+
+### 2. Set up environment variables
+
+Create a `.env.local` file:
+
+```
+NEXT_PUBLIC_LIVEKIT_URL=ws://localhost:7880
+LIVEKIT_URL=http://localhost:7880
+LIVEKIT_API_KEY=devkey
+LIVEKIT_API_SECRET=secret
+```
+
+### 3. Start the Next.js dev server
+
+```bash
+bun install
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Audio Recording
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Audio recording is automatic. When a participant joins a call, LiveKit fires a webhook to the Next.js app, which starts an audio-only recording via the Egress service. When the room empties (after ~30s timeout), the recording stops and saves to the `./recordings/` directory as an `.ogg` file.
+
+### Verifying recordings locally
+
+1. `docker compose up` — confirm all 3 containers start
+2. `bun dev` — start Next.js on :3000
+3. Join a call, talk for a few seconds, then leave
+4. Wait ~30s for the room to close
+5. Check `./recordings/` for an `.ogg` file
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [LiveKit Documentation](https://docs.livekit.io/) - learn about LiveKit.
